@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">OrgApp</string>
+    <string name="mainDateLabel">date_label</string>
+    <string name="toolbarMenuButton">menu_button</string>
+    <string name="toolbarOrgButton">org_button</string>
+    <string name="toolbarPlnButton">pln_button</string>
+    <string name="toolbarCalButton">cal_button</string>
+    <string name="toolbarStuffButton">stuff_button</string>
+    <string name="extra_button_text">Extra</string>
+    <string name="calen_button_text">Calen</string>
+    <string name="planner_button_text">Planner</string>
+    <string name="org_button_text">Org</string>
+    <string name="menu_button_text">Menu</string>
+    <string name="newGroupPlus">+</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_group_button">Edit</string>
+    <string name="group_fragment_name_label">[GroupName]</string>
+    <string name="group_fragment_type_label">[GroupType]</string>
+    <string name="new_group_name_input">Name</string>
+    <string name="new_group_type_input">Type</string>
+    <string name="new_group_finish_button">Finish</string>
+</resources>
