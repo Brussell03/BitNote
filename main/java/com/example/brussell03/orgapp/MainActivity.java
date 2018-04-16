@@ -43,29 +43,6 @@ public class MainActivity extends AppCompatActivity /*implements MenuBarFragment
         setContentView(mainMenuLayout);*/
     }
 
-    /*@Override
-    public void changeActivity(int actChange, View view) {
-        if(actChange == 1) {
-            Log.i(TAG, "otherScreenSwap");
-
-        } else if(actChange == 2) {
-            Log.i(TAG, "calScreenSwap");
-
-        } else if(actChange == 3) {
-            Log.i(TAG, "menuScreenSwap");
-
-        } else if(actChange == 4) {
-            Log.i(TAG, "orgScreenSwap");
-            Intent i = new Intent(this, OrganizerActivity.class);
-            startActivityFromFragment(, i, OrganizerActivity.class);
-
-        } else if(actChange == 5) {
-            Log.i(TAG, "plnScreenSwap");
-
-        }
-
-    }*/
-
     @Override
     protected void onStart() {
         super.onStart();

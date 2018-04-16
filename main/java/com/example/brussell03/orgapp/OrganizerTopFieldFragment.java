@@ -15,7 +15,6 @@ import android.app.Activity;
 import android.content.Intent;
 
 public class OrganizerTopFieldFragment extends Fragment {
-    //private static Button menuSwapBtn, orgSwapBtn, plnSwapBtn, calSwapBtn, otherSwapBtn;
     private static final String TAG = "briansMessage";
 
 
@@ -41,13 +40,12 @@ public class OrganizerTopFieldFragment extends Fragment {
 
         Button newGroupButton = (Button)view.findViewById(R.id.newGroupButton);
 
-        newGroupButton.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View view) {
-                        activityCommander.topFieldInput(1, view);
-                    }
-                }
-        );
+        newGroupButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), GroupCreatorActivity.class);
+                startActivity(i);
+            }
+        });
 
         return view;
     }
