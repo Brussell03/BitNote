@@ -15,10 +15,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="edit_group_button">Edit</string>
     <string name="group_fragment_name_label">[GroupName]</string>
     <string name="group_fragment_type_label">[GroupType]</string>
     <string name="new_group_name_input">Name</string>
     <string name="new_group_type_input">Type</string>
     <string name="new_group_finish_button">Finish</string>
+    <string name="edit_group_button">Edit</string>
+    <string name="new_entry_button">+</string>
+    <string name="group_view_back">back</string>
+    <string name="group_item_placeholder">Item</string>
 </resources>

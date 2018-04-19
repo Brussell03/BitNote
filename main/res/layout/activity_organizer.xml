@@ -23,14 +23,17 @@
             tools:layout_editor_absoluteX="219dp"
             tools:layout_editor_absoluteY="297dp" />
 
-        <fragment
-            android:id="@+id/OrgTopFieldFragment"
-            android:name="com.example.brussell03.orgapp.OrganizerTopFieldFragment"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
+        <Button
+            android:id="@+id/newGroupButton"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            tools:layout="@layout/organizer_top_field_fragment" />
+            android:text="@string/newGroupPlus"
+            android:textSize="32sp"
+            android:background="#444444"
+            />
 
 
 

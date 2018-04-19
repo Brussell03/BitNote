@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".OrganizerActivity" />
-        <activity android:name=".GroupCreatorActivity"></activity>
+        <activity android:name=".GroupCreatorActivity"/>
+        <activity android:name=".EditGroupActivity"/>
     </application>
 
 </manifest>

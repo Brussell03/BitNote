@@ -3,27 +3,39 @@ package com.example.brussell03.orgapp;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.RelativeLayout; //This is how you add in a layout
-import android.widget.Button; //This is how you would add in a widget
-import android.graphics.Color; //Put this in to have color
-import android.widget.EditText;
-import android.content.res.Resources;  //Needs for finding devices resources
-import android.util.TypedValue; //Need for doing width
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-import android.app.Activity;
-import android.content.Intent;
 
-public class MainActivity extends AppCompatActivity /*implements MenuBarFragment.MenuBarListener*/ {
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements MenuBarFragment.MenuBarListener {
 
     private static final String TAG = "briansMessage";
 
+    int groups;
+    int groupItems;
+    ArrayList<String> groupNames = new ArrayList<String>();
+    ArrayList<String> groupTypes = new ArrayList<String>();
+    ArrayList<String> fail = new ArrayList<String>();
+    ArrayList<Integer> groupItemNumbers = new ArrayList<Integer>();
+    ArrayList<? extends ArrayList<String>> groupItemNames = new ArrayList<ArrayList<String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Bundle data = getIntent().getExtras();
+
+        if (data != null) {
+            groups = data.getInt("groups");
+            groupItems = data.getInt("groupItems");
+            groupNames = data.getStringArrayList("groupNames");
+            groupTypes = data.getStringArrayList("groupTypes");
+            groupItemNumbers = data.getIntegerArrayList("groupItemNumbers");
+            groupItemNames = data.getParcelableArrayList("groupItemNames");
+        }
 
         RelativeLayout mainMenuLayout = findViewById(R.id.mainMenuLayout);
 
@@ -42,6 +54,34 @@ public class MainActivity extends AppCompatActivity /*implements MenuBarFragment
 
         setContentView(mainMenuLayout);*/
     }
+
+    @Override
+    public int changeActivityInt(int x, View view) {
+        if(x == 1) {
+            return groups;
+        } else if(x == 2) {
+            return groupItems;
+        }
+        return x;
+    }
+
+    @Override
+    public ArrayList<String> changeActivityStr(int x, View view) {
+        if(x == 1) {
+            return groupNames;
+        } else if(x == 2) {
+            return groupTypes;
+        }
+        return fail;
+    }
+
+    @Override
+    public ArrayList<Integer> changeActivityIntArray(View view) {
+        return groupItemNumbers;
+    }
+
+    @Override
+    public ArrayList<? extends ArrayList<String>> changeActivityArray(View view) {return groupItemNames;}
 
     @Override
     protected void onStart() {

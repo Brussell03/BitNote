@@ -4,13 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.app.Activity;
 import android.content.Intent;
+import java.util.ArrayList;
 
 public class MenuBarFragment extends Fragment {
 
@@ -18,9 +17,12 @@ public class MenuBarFragment extends Fragment {
     private static final String TAG = "briansMessage";
 
 
-    /*MenuBarListener activityCommander;
+    MenuBarListener activityCommander;
     public interface MenuBarListener {
-        public void changeActivity(int actChange, View view);
+        public int changeActivityInt(int x, View view);
+        public ArrayList<String> changeActivityStr(int x, View view);
+        public ArrayList<Integer> changeActivityIntArray(View view);
+        public ArrayList<? extends ArrayList<String>> changeActivityArray(View view);
     }
 
     @Override
@@ -31,7 +33,7 @@ public class MenuBarFragment extends Fragment {
         }catch (ClassCastException e){
             throw new ClassCastException(getActivity().toString());
         }
-    }*/
+    }
 
     @Nullable
     @Override
@@ -47,10 +49,16 @@ public class MenuBarFragment extends Fragment {
         menuSwapBtn.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View view) {
-                        Intent m = new Intent(getActivity(), MainActivity.class);
-                        startActivity(m);
-
-                        Log.i(TAG, getActivity().toString());
+                        Intent i = new Intent(getActivity(), MainActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putInt("groups", activityCommander.changeActivityInt(1, view));
+                        extras.putInt("groupItems", activityCommander.changeActivityInt(2, view));
+                        extras.putStringArrayList("groupNames", activityCommander.changeActivityStr(1, view));
+                        extras.putStringArrayList("groupTypes", activityCommander.changeActivityStr(2, view));
+                        extras.putIntegerArrayList("groupItemNumbers", activityCommander.changeActivityIntArray(view));
+                        i.putExtras(extras);
+                        i.putExtra("groupItemNames", activityCommander.changeActivityArray(view));
+                        startActivity(i);
                     }
                 }
         );
@@ -58,10 +66,17 @@ public class MenuBarFragment extends Fragment {
         orgSwapBtn.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View view) {
-                        Intent o = new Intent(getActivity(), OrganizerActivity.class);
-                        startActivity(o);
-
-                        Log.i(TAG, getActivity().toString());
+                        Intent i = new Intent(getActivity(), OrganizerActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putInt("groups", activityCommander.changeActivityInt(1, view));
+                        extras.putInt("groupItems", activityCommander.changeActivityInt(2, view));
+                        extras.putBoolean("newGroup", false);
+                        extras.putStringArrayList("groupNames", activityCommander.changeActivityStr(1, view));
+                        extras.putStringArrayList("groupTypes", activityCommander.changeActivityStr(2, view));
+                        extras.putIntegerArrayList("groupItemNumbers", activityCommander.changeActivityIntArray(view));
+                        i.putExtras(extras);
+                        i.putExtra("groupItemNames", activityCommander.changeActivityArray(view));
+                        startActivity(i);
                     }
                 }
         );
