@@ -22,7 +22,7 @@ public class MenuBarFragment extends Fragment {
         public int changeActivityInt(int x, View view);
         public ArrayList<String> changeActivityStr(int x, View view);
         public ArrayList<Integer> changeActivityIntArray(View view);
-        public ArrayList<? extends ArrayList<String>> changeActivityArray(View view);
+        public ArrayList<ArrayList<String>> changeActivityArray(View view);
     }
 
     @Override
@@ -56,8 +56,15 @@ public class MenuBarFragment extends Fragment {
                         extras.putStringArrayList("groupNames", activityCommander.changeActivityStr(1, view));
                         extras.putStringArrayList("groupTypes", activityCommander.changeActivityStr(2, view));
                         extras.putIntegerArrayList("groupItemNumbers", activityCommander.changeActivityIntArray(view));
+                        ArrayList<ArrayList<String>> groupItemNames =  activityCommander.changeActivityArray(view);
+                        int groups = activityCommander.changeActivityInt(1, view);
+                        int y = 1;
+                        for(int x = 0; x < groups; x++) {
+                            ArrayList<String> items = groupItemNames.get(x);
+                            extras.putStringArrayList(String.valueOf(y), items);
+                            y++;
+                        }
                         i.putExtras(extras);
-                        i.putExtra("groupItemNames", activityCommander.changeActivityArray(view));
                         startActivity(i);
                     }
                 }
@@ -74,8 +81,15 @@ public class MenuBarFragment extends Fragment {
                         extras.putStringArrayList("groupNames", activityCommander.changeActivityStr(1, view));
                         extras.putStringArrayList("groupTypes", activityCommander.changeActivityStr(2, view));
                         extras.putIntegerArrayList("groupItemNumbers", activityCommander.changeActivityIntArray(view));
+                        ArrayList<ArrayList<String>> groupItemNames =  activityCommander.changeActivityArray(view);
+                        int groups = activityCommander.changeActivityInt(1, view);
+                        int y = 1;
+                        for(int x = 0; x < groups; x++) {
+                            ArrayList<String> items = groupItemNames.get(x);
+                            extras.putStringArrayList(String.valueOf(y), items);
+                            y++;
+                        }
                         i.putExtras(extras);
-                        i.putExtra("groupItemNames", activityCommander.changeActivityArray(view));
                         startActivity(i);
                     }
                 }
@@ -111,33 +125,4 @@ public class MenuBarFragment extends Fragment {
         return view;
     }
 
-    /*public void menuButtonClicked(View view) {
-        activityCommander.changeActivity(3, view);
-        //Intent m = new Intent(this, MainActivity.class);
-        //startActivity(m);
-    }
-
-    public void orgButtonClicked(View view) {
-        activityCommander.changeActivity(4, view);
-        //Intent m = new Intent(currentActivity, OrganizerActivity.class);
-        //startActivity(m);
-    }
-
-    public void plnButtonClicked(View view) {
-        activityCommander.changeActivity(5, view);
-        //Intent m = new Intent(currentActivity, MainActivity.class);
-        //startActivity(m);
-    }
-
-    public void calButtonClicked(View view) {
-        activityCommander.changeActivity(2, view);
-        //Intent m = new Intent(currentActivity, MainActivity.class);
-        //startActivity(m);
-    }
-
-    public void otherButtonClicked(View view) {
-        activityCommander.changeActivity(1, view);
-        //Intent m = new Intent(currentActivity, MainActivity.class);
-        //startActivity(m);
-    }*/
 }

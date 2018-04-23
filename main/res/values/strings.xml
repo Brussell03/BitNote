@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OrgApp</string>
+    <string name="app_name">BitNote</string>
     <string name="mainDateLabel">date_label</string>
     <string name="toolbarMenuButton">menu_button</string>
     <string name="toolbarOrgButton">org_button</string>
