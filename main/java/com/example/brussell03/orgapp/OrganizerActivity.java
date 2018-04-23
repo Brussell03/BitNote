@@ -23,7 +23,7 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
     ArrayList<String> groupTypes = new ArrayList<String>();
     ArrayList<String> fail = new ArrayList<String>();
     ArrayList<Integer> groupItemNumbers = new ArrayList<Integer>();
-    ArrayList<? extends ArrayList<String>> groupItemNames = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> groupItemNames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,12 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
             groupNames = data.getStringArrayList("groupNames");
             groupTypes = data.getStringArrayList("groupTypes");
             groupItemNumbers = data.getIntegerArrayList("groupItemNumbers");
-            groupItemNames = data.getParcelableArrayList("groupItemNames");
+            int y = 1;
+            for(int x = 0; x < groups; x++) {
+                ArrayList<String> items = data.getStringArrayList(String.valueOf(y));
+                groupItemNames.add(items);
+                y++;
+            }
 
             for(int t = 0; t < groups; t++) {
 
@@ -120,7 +125,6 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
 
                 final int x = t + 1;
                 //groupItemNumbers.add(0);
-
                 groupEditButton.setOnClickListener(new Button.OnClickListener() {
                     public void onClick(View view) {
                         Intent i = new Intent(OrganizerActivity.this, EditGroupActivity.class);
@@ -131,6 +135,28 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
                         extras.putStringArrayList("groupTypes", groupTypes);
                         extras.putIntegerArrayList("groupItemNumbers", groupItemNumbers);
                         extras.putInt("group", x);
+                        Log.i(TAG, String.valueOf(changeActivityArray(view)));
+                        Log.i(TAG, "Step 1");
+                        int y = 1;
+                        for(int x = 0; x < changeActivityInt(1, view); x++) {
+                            Log.i(TAG, "Step 2");
+                            if(changeActivityArray(view) != null) {
+                                Log.i(TAG, "Step 3");
+                                ArrayList<ArrayList<String>> itemsArray = changeActivityArray(view);
+                                Log.i(TAG, "Step 4");
+                                ArrayList<String> items = new ArrayList<>();
+                                Log.i(TAG, "Step 4.3");
+                                if(itemsArray.size() != 0) {
+                                    Log.i(TAG, String.valueOf(itemsArray.get(x)));
+                                    Log.i(TAG, "Step 4.5");
+                                    items = itemsArray.get(x);
+                                    Log.i(TAG, "Step 5");
+                                    extras.putStringArrayList(String.valueOf(y), items);
+                                }
+                                Log.i(TAG, "Step 6");
+                                y++;
+                            }
+                        }
                         i.putExtras(extras);
                         startActivity(i);
                     }
@@ -220,6 +246,7 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
 
                 groups++;
                 groupItemNumbers.add(0);
+                groupItemNames.add(new ArrayList<String>());
 
                 groupEditButton.setOnClickListener(new Button.OnClickListener() {
                     public void onClick(View view) {
@@ -231,6 +258,29 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
                         extras.putStringArrayList("groupTypes", groupTypes);
                         extras.putIntegerArrayList("groupItemNumbers", groupItemNumbers);
                         extras.putInt("group", groups);
+
+                        Log.i(TAG, String.valueOf(changeActivityArray(view)));
+                        Log.i(TAG, "Step 1");
+                        int y = 1;
+                        for(int x = 0; x < changeActivityInt(1, view); x++) {
+                            Log.i(TAG, "Step 2");
+                            if(changeActivityArray(view) != null) {
+                                Log.i(TAG, "Step 3");
+                                ArrayList<ArrayList<String>> itemsArray = changeActivityArray(view);
+                                Log.i(TAG, "Step 4");
+                                ArrayList<String> items = new ArrayList<>();
+                                Log.i(TAG, "Step 4.3");
+                                if(itemsArray.size() != 0) {
+                                    Log.i(TAG, String.valueOf(itemsArray.get(x)));
+                                    Log.i(TAG, "Step 4.5");
+                                    items = itemsArray.get(x);
+                                    Log.i(TAG, "Step 5");
+                                    extras.putStringArrayList(String.valueOf(y), items);
+                                }
+                                Log.i(TAG, "Step 6");
+                                y++;
+                            }
+                        }
                         i.putExtras(extras);
                         startActivity(i);
                     }
@@ -251,7 +301,13 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
                 extras.putStringArrayList("groupNames", groupNames);
                 extras.putStringArrayList("groupTypes", groupTypes);
                 extras.putIntegerArrayList("groupItemNumbers", groupItemNumbers);
-                i.putExtra("groupItemNames", groupItemNames);
+                //i.putExtra("groupItemNames", groupItemNames);
+                int y = 1;
+                for(int x = 0; x < groups; x++) {
+                    ArrayList<String> items = groupItemNames.get(x);
+                    extras.putStringArrayList(String.valueOf(y), items);
+                    y++;
+                }
                 i.putExtras(extras);
                 startActivity(i);
             }
@@ -286,7 +342,9 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
     }
 
     @Override
-    public ArrayList<? extends ArrayList<String>> changeActivityArray(View view) {return groupItemNames;}
+    public ArrayList<ArrayList<String>> changeActivityArray(View view) {
+        return groupItemNames;
+    }
 
     public void topFieldInput(int i, View view) {
         switch(i) {
@@ -314,41 +372,33 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "onStart");
     }
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "onResume");
     }
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i(TAG, "onPause");
     }
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i(TAG, "onStop");
     }
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.i(TAG, "onRestart");
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "onDestroy");
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState");
     }
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.i(TAG, "onRestoreInstanceState");
     }
 }

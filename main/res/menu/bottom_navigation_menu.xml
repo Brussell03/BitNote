@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <item
+        android:id="@+id/action_menu"
+        android:enabled="true"
+        android:icon="@drawable/menu_icon"
+        android:title="Menu"/>
+    <item
+        android:id="@+id/action_org"
+        android:enabled="true"
+        android:icon="@drawable/org_icon"
+        android:title="Organizer"/>
+    <item
+        android:id="@+id/action_pln"
+        android:enabled="true"
+        android:icon="@drawable/planner_icon"
+        android:title="Planner"/>
+    <item
+        android:id="@+id/action_cal"
+        android:enabled="true"
+        android:icon="@drawable/calendar_icon"
+        android:title="Calendar"/>
+    <item
+        android:id="@+id/action_other"
+        android:enabled="true"
+        android:icon="@drawable/menu_icon"
+        android:title="Other"/>
+</menu>
