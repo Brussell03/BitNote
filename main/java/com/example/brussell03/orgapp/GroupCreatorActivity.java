@@ -25,6 +25,11 @@ public class GroupCreatorActivity extends AppCompatActivity {
     ArrayList<String> groupTypes = new ArrayList<String>();
     ArrayList<Integer> groupItemNumbers = new ArrayList<Integer>();
     ArrayList<ArrayList<String>> groupItemNames = new ArrayList<>();
+
+    int notes;
+    ArrayList<String> noteNames = new ArrayList<>();
+    ArrayList<String> noteDesc = new ArrayList<>();
+
     String typeString;
 
     @Override
@@ -69,6 +74,9 @@ public class GroupCreatorActivity extends AppCompatActivity {
                 groupItemNames.add(items);
                 y++;
             }
+            notes = data.getInt("notes");
+            noteNames = data.getStringArrayList("noteNames");
+            noteDesc = data.getStringArrayList("noteDesc");
             Log.i(TAG, groupItemNames.toString());
         }
 
@@ -82,8 +90,12 @@ public class GroupCreatorActivity extends AppCompatActivity {
                 final EditText nameInput = (EditText) findViewById(R.id.newGroupNameInput);
                 final String nameString = nameInput.getText().toString();
 
-                //final EditText typeInput = (EditText) findViewById(R.id.newGroupTypeInput);
-                //final String typeString = typeInput.getText().toString();
+                groups++;
+                groupItems += 4;
+                groupNames.add(nameString);
+                groupTypes.add(typeString);
+                groupItemNumbers.add(0);
+                groupItemNames.add(new ArrayList<String>());
 
                 Bundle extras = new Bundle();
                 extras.putInt("groups", groups);
@@ -102,7 +114,9 @@ public class GroupCreatorActivity extends AppCompatActivity {
                 Log.i(TAG, "1");
                 i.putExtra("nameMessage", nameString);
                 i.putExtra("typeMessage", typeString);
-                i.putExtra("newGroup", true);
+                i.putExtra("notes", notes);
+                i.putExtra("noteNames", noteNames);
+                i.putExtra("noteDesc", noteDesc);
 
                 Log.i(TAG, "2");
                 startActivity(i);

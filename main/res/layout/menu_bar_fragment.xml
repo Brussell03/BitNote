@@ -2,55 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Button
-        android:id="@+id/menuSwapButton"
-        android:layout_width="77dp"
-        android:layout_height="60dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:text="@string/menu_button_text"
-        />
-
-    <Button
-        android:id="@+id/orgSwapButton"
-        android:layout_width="77dp"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:text="@string/org_button_text"
-        android:layout_marginLeft="231dp"
-        android:layout_marginStart="77dp"
-        />
-
-    <Button
-        android:id="@+id/plnSwapButton"
-        android:layout_width="77dp"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/planner_button_text"
-        />
-
-    <Button
-        android:id="@+id/calSwapButton"
-        android:layout_width="77dp"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:text="@string/calen_button_text"
-        android:layout_marginLeft="77dp"
-        android:layout_marginStart="77dp"
-        />
-
-    <Button
-        android:id="@+id/otherSwapButton"
-        android:layout_width="77dp"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:text="@string/extra_button_text"
-        />
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

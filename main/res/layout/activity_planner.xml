@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OrganizerActivity">
+    tools:context=".PlannerActivity">
+
 
     <RelativeLayout
-        android:id="@+id/organizerLayout"
+        android:id="@+id/PlannerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#111111">
@@ -23,22 +24,19 @@
             tools:layout_editor_absoluteX="219dp"
             tools:layout_editor_absoluteY="297dp" />
 
-        <Button
-            android:id="@+id/newGroupButton"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+        <ImageButton
+            android:id="@+id/newNoteButton"
+            android:layout_width="82dp"
+            android:layout_height="76dp"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="@string/newGroupPlus"
-            android:textSize="32sp"
-            android:background="#444444"
-            />
+            app:srcCompat="@android:drawable/ic_input_add" />
 
         <ScrollView
-            android:id="@+id/orgScrollView"
+            android:id="@+id/plnScrollView"
             android:layout_width="match_parent"
-            android:layout_height="390dp"
+            android:layout_height="374dp"
             android:layout_above="@+id/MenuBarFragment">
 
             <LinearLayout
@@ -47,7 +45,7 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
-                    android:id="@+id/groupLayout"
+                    android:id="@+id/NoteLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -55,7 +53,5 @@
             </LinearLayout>
         </ScrollView>
 
-
     </RelativeLayout>
-
 </android.support.constraint.ConstraintLayout>

@@ -66,4 +66,36 @@
         android:text="@string/group_view_back"
         android:textSize="12sp" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="431dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/itemLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/groupDeleteButton"
+        android:layout_width="60dp"
+        android:layout_height="61dp"
+        android:layout_alignTop="@+id/groupViewNameLabel"
+        android:layout_toStartOf="@+id/groupViewEditButton"
+        android:layout_toLeftOf="@+id/groupViewEditButton"
+        android:gravity="bottom|center_vertical|center_horizontal|center"
+        android:text="@string/group_delete_button"
+        android:textSize="36sp" />
+
 </RelativeLayout>

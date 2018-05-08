@@ -19,6 +19,7 @@
         <activity android:name=".OrganizerActivity" />
         <activity android:name=".GroupCreatorActivity"/>
         <activity android:name=".EditGroupActivity"/>
+        <activity android:name=".PlannerActivity"></activity>
     </application>
 
 </manifest>

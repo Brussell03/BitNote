@@ -24,4 +24,5 @@
     <string name="new_entry_button">+</string>
     <string name="group_view_back">back</string>
     <string name="group_item_placeholder">Item</string>
+    <string name="group_delete_button">-</string>
 </resources>

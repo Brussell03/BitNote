@@ -1,5 +1,6 @@
 package com.example.brussell03.orgapp;
 
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.RelativeLayout; //This is how you add in a layout
@@ -12,8 +13,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.content.Intent;
 import java.util.ArrayList;
+import android.view.MotionEvent;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
+import android.support.v4.view.GestureDetectorCompat;
+import android.widget.ScrollView;
+import android.view.View.OnTouchListener;
 
-public class OrganizerActivity extends AppCompatActivity implements MenuBarFragment.MenuBarListener {
+public class OrganizerActivity extends AppCompatActivity implements MenuBarFragment.MenuBarListener, GestureDetector.OnGestureListener {
 
     private static final String TAG = "briansMessage";
 
@@ -25,18 +32,33 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
     ArrayList<Integer> groupItemNumbers = new ArrayList<Integer>();
     ArrayList<ArrayList<String>> groupItemNames = new ArrayList<>();
 
+    int notes;
+    ArrayList<String> noteNames = new ArrayList<>();
+    ArrayList<String> noteDesc = new ArrayList<>();
+
+    private GestureDetectorCompat gestureDetector;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizer);
 
-        RelativeLayout organizerLayout = findViewById(R.id.organizerLayout);
+        this.gestureDetector = new GestureDetectorCompat(this, this);
+
+        RelativeLayout groupLayout = findViewById(R.id.groupLayout);
+
+        ScrollView scrollView = findViewById(R.id.orgScrollView);
+        scrollView.setOnTouchListener(new OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureDetector != null && gestureDetector.onTouchEvent(event);
+            }
+        });
 
         Resources r = getResources();
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, r.getDisplayMetrics());
 
         Bundle data = getIntent().getExtras();
-        Intent i = getIntent();
 
         if (data != null) {
             groups = data.getInt("groups");
@@ -50,14 +72,17 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
                 groupItemNames.add(items);
                 y++;
             }
+            notes = data.getInt("notes");
+            noteNames = data.getStringArrayList("noteNames");
+            noteDesc = data.getStringArrayList("noteDesc");
 
             for(int t = 0; t < groups; t++) {
 
                 String name;
                 String type;
                 try {
-                    name = groupNames.get(t);
-                    type = groupTypes.get(t);
+                    name = groupNames.get(t).toUpperCase();
+                    type = groupTypes.get(t).toUpperCase();
                 } catch(Exception e) {
                     break;
                 }
@@ -93,7 +118,7 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT
                 );
-                groupBackgroundDetails.setMargins(10, 150 + (t * (px / 5 + 10)), 0, 0);
+                groupBackgroundDetails.setMargins(10, t * (px / 5 + 10), 0, 0);
 
                 RelativeLayout.LayoutParams groupEditButtonDetails = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -101,7 +126,7 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
                 );
                 groupEditButtonDetails.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 groupEditButtonDetails.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                groupEditButtonDetails.setMargins(0, 160 + (t * (px / 5 + 10)), 10, 0);
+                groupEditButtonDetails.setMargins(0, 10 + t * (px / 5 + 10), 10, 0);
 
                 RelativeLayout.LayoutParams groupNameLabelDetails = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -109,19 +134,19 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
                 );
                 groupNameLabelDetails.addRule(RelativeLayout.ALIGN_PARENT_TOP);
                 groupNameLabelDetails.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                groupNameLabelDetails.setMargins(30, 160 + (t * (px / 5 + 10)), 0, 0);
+                groupNameLabelDetails.setMargins(30, 10 + t * (px / 5 + 10), 0, 0);
 
                 RelativeLayout.LayoutParams groupTypeLabelDetails = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT
                 );
                 groupTypeLabelDetails.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                groupTypeLabelDetails.setMargins(30, 220 + (t * (px / 5 + 10)), 0, 0);
+                groupTypeLabelDetails.setMargins(30, 70 + t * (px / 5 + 10), 0, 0);
 
-                organizerLayout.addView(groupBackground, groupBackgroundDetails);
-                organizerLayout.addView(groupEditButton, groupEditButtonDetails);
-                organizerLayout.addView(groupNameLabel, groupNameLabelDetails);
-                organizerLayout.addView(groupTypeLabel, groupTypeLabelDetails);
+                groupLayout.addView(groupBackground, groupBackgroundDetails);
+                groupLayout.addView(groupEditButton, groupEditButtonDetails);
+                groupLayout.addView(groupNameLabel, groupNameLabelDetails);
+                groupLayout.addView(groupTypeLabel, groupTypeLabelDetails);
 
                 final int x = t + 1;
                 //groupItemNumbers.add(0);
@@ -157,130 +182,9 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
                                 y++;
                             }
                         }
-                        i.putExtras(extras);
-                        startActivity(i);
-                    }
-                });
-
-            }
-
-            boolean newGroup = data.getBoolean("newGroup");
-            if (newGroup) {
-                String newGroupName = data.getString("nameMessage");
-                String newGroupType = data.getString("typeMessage");
-
-                Log.i(TAG, newGroupName);
-                Log.i(TAG, newGroupType);
-
-                groupNames.add(groups, newGroupName);
-                groupTypes.add(groups, newGroupType);
-
-                Log.i(TAG, "\n\n\n\n\n" + groupNames + "\n" + groupTypes + "\n\n\n\n");
-
-                TextView groupNameLabel = new TextView(this);
-                groupNameLabel.setText(newGroupName);
-                groupNameLabel.setTextSize(24);
-                groupNameLabel.setTextColor(Color.WHITE);
-                //groupNameLabel.setId(Integer.parseInt(newGroupName + "1"));
-                //groupNameLabel.setId(groupItems + 1);
-                groupItems++;
-
-                TextView groupTypeLabel = new TextView(this);
-                groupTypeLabel.setText(newGroupType);
-                groupTypeLabel.setTextSize(16);
-                groupTypeLabel.setTextColor(Color.WHITE);
-                //groupTypeLabel.setId(Integer.parseInt(newGroupName + "2"));
-                //groupNameLabel.setId(groupItems + 1);
-                groupItems++;
-
-                Button groupEditButton = new Button(this);
-                groupEditButton.setText(R.string.edit_group_button);
-                //groupTypeLabel.setId(Integer.parseInt(newGroupName + "3"));
-                //groupNameLabel.setId(groupItems + 1);
-                groupItems++;
-
-                TextView groupBackground = new TextView(this);
-                groupBackground.setText(null);
-                groupBackground.setBackgroundColor(Color.BLUE);
-                groupBackground.setWidth(px);
-                groupBackground.setHeight(px / 5);
-                //groupTypeLabel.setId(Integer.parseInt(newGroupName + "4"));
-                //groupNameLabel.setId(groupItems + 1);
-                groupItems++;
-
-                System.out.println(groupItems);
-
-                RelativeLayout.LayoutParams groupBackgroundDetails = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                );
-                groupBackgroundDetails.setMargins(10, 150 + (groups * (px / 5 + 10)), 0, 0);
-
-                RelativeLayout.LayoutParams groupEditButtonDetails = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                );
-                groupEditButtonDetails.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                groupEditButtonDetails.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                groupEditButtonDetails.setMargins(0, 160 + (groups * (px / 5 + 10)), 10, 0);
-
-                RelativeLayout.LayoutParams groupNameLabelDetails = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                );
-                groupNameLabelDetails.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                groupNameLabelDetails.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                groupNameLabelDetails.setMargins(30, 160 + (groups * (px / 5 + 10)), 0, 0);
-
-                RelativeLayout.LayoutParams groupTypeLabelDetails = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                );
-                groupTypeLabelDetails.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                groupTypeLabelDetails.setMargins(30, 220 + (groups * (px / 5 + 10)), 0, 0);
-
-                organizerLayout.addView(groupBackground, groupBackgroundDetails);
-                organizerLayout.addView(groupEditButton, groupEditButtonDetails);
-                organizerLayout.addView(groupNameLabel, groupNameLabelDetails);
-                organizerLayout.addView(groupTypeLabel, groupTypeLabelDetails);
-
-                groups++;
-                groupItemNumbers.add(0);
-                groupItemNames.add(new ArrayList<String>());
-
-                groupEditButton.setOnClickListener(new Button.OnClickListener() {
-                    public void onClick(View view) {
-                        Intent i = new Intent(OrganizerActivity.this, EditGroupActivity.class);
-                        Bundle extras = new Bundle();
-                        extras.putInt("groups", groups);
-                        extras.putInt("groupItems", groupItems);
-                        extras.putStringArrayList("groupNames", groupNames);
-                        extras.putStringArrayList("groupTypes", groupTypes);
-                        extras.putIntegerArrayList("groupItemNumbers", groupItemNumbers);
-                        extras.putInt("group", groups);
-
-                        Log.i(TAG, String.valueOf(changeActivityArray(view)));
-                        Log.i(TAG, "Step 1");
-                        int y = 1;
-                        for(int x = 0; x < changeActivityInt(1, view); x++) {
-                            Log.i(TAG, "Step 2");
-                            if(changeActivityArray(view) != null) {
-                                Log.i(TAG, "Step 3");
-                                ArrayList<ArrayList<String>> itemsArray = changeActivityArray(view);
-                                Log.i(TAG, "Step 4");
-                                ArrayList<String> items = new ArrayList<>();
-                                Log.i(TAG, "Step 4.3");
-                                if(itemsArray.size() != 0) {
-                                    Log.i(TAG, String.valueOf(itemsArray.get(x)));
-                                    Log.i(TAG, "Step 4.5");
-                                    items = itemsArray.get(x);
-                                    Log.i(TAG, "Step 5");
-                                    extras.putStringArrayList(String.valueOf(y), items);
-                                }
-                                Log.i(TAG, "Step 6");
-                                y++;
-                            }
-                        }
+                        i.putExtra("notes", notes);
+                        i.putExtra("noteNames", noteNames);
+                        i.putExtra("noteDesc", noteDesc);
                         i.putExtras(extras);
                         startActivity(i);
                     }
@@ -308,6 +212,9 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
                     extras.putStringArrayList(String.valueOf(y), items);
                     y++;
                 }
+                i.putExtra("notes", notes);
+                i.putExtra("noteNames", noteNames);
+                i.putExtra("noteDesc", noteDesc);
                 i.putExtras(extras);
                 startActivity(i);
             }
@@ -321,6 +228,8 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
             return groups;
         } else if(x == 2) {
             return groupItems;
+        } else if(x == 3) {
+            return notes;
         }
         return x;
     }
@@ -332,6 +241,10 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
                 return groupNames;
             case 2:
                 return groupTypes;
+            case 3:
+                return noteNames;
+            case 4:
+                return noteDesc;
         }
         return fail;
     }
@@ -346,27 +259,89 @@ public class OrganizerActivity extends AppCompatActivity implements MenuBarFragm
         return groupItemNames;
     }
 
-    public void topFieldInput(int i, View view) {
-        switch(i) {
-            case 1:
-                /*FragmentManager fm = getSupportFragmentManager();
-		        FragmentTransaction ft = fm.beginTransaction();
-		        //Fragment groupCreatorFragment = fm.findFragmentByTag("new_group_creator_fragment");
-                Fragment groupCreatorFragment = new Fragment();
-                ft.add(R.id.newGroupCreatorContainer, groupCreatorFragment, "My Creator");
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-
-		        if(groupCreatorFragment == null) {
-		            //groupCreatorFragment = new Fragment();
-
-		        } else {
-		            return;
-		        }
-
-		        ft.commit();*/
-            default:
-                Log.i(TAG, "Something went wrong with declaring the new group");
+    @Override
+    public boolean onFling(MotionEvent motionEvent1, MotionEvent motionEvent2, float X, float Y) {
+        if (motionEvent1.getX() - motionEvent2.getX() > 100) {
+            //Left
+            Intent p = new Intent(this, PlannerActivity.class);
+            Bundle extras = new Bundle();
+            extras.putInt("groups", groups);
+            extras.putInt("groupItems", groupItems);
+            extras.putStringArrayList("groupNames", groupNames);
+            extras.putStringArrayList("groupTypes", groupTypes);
+            extras.putIntegerArrayList("groupItemNumbers", groupItemNumbers);
+            int y = 1;
+            for(int x = 0; x < groups; x++) {
+                ArrayList<String> items = groupItemNames.get(x);
+                extras.putStringArrayList(String.valueOf(y), items);
+                y++;
+            }
+            p.putExtra("notes", notes);
+            p.putExtra("noteNames", noteNames);
+            p.putExtra("noteDesc", noteDesc);
+            p.putExtras(extras);
+            startActivity(p);
+            return true;
         }
+
+        if (motionEvent2.getX() - motionEvent1.getX() > 100) {
+            //Right
+            Intent m = new Intent(this, MainActivity.class);
+            Bundle extras = new Bundle();
+            extras.putInt("groups", groups);
+            extras.putInt("groupItems", groupItems);
+            extras.putStringArrayList("groupNames", groupNames);
+            extras.putStringArrayList("groupTypes", groupTypes);
+            extras.putIntegerArrayList("groupItemNumbers", groupItemNumbers);
+            int y = 1;
+            for(int x = 0; x < groups; x++) {
+                ArrayList<String> items = groupItemNames.get(x);
+                extras.putStringArrayList(String.valueOf(y), items);
+                y++;
+            }
+            m.putExtra("notes", notes);
+            m.putExtra("noteNames", noteNames);
+            m.putExtra("noteDesc", noteDesc);
+            m.putExtras(extras);
+            startActivity(m);
+            return true;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onLongPress(MotionEvent arg0) {
+
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2, float arg3) {
+
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent arg0) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent arg0) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+
+        return gestureDetector.onTouchEvent(motionEvent);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent arg0) {
+
+        return false;
     }
 
     @Override

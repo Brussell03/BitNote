@@ -6,12 +6,20 @@ import android.os.Bundle;
 import android.widget.RelativeLayout; //This is how you add in a layout
 import android.util.Log;
 import android.view.View;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import android.view.MotionEvent;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
+import android.widget.TextView;
+import android.graphics.Color;
 
 public class MainActivity extends AppCompatActivity implements MenuBarFragment.MenuBarListener, OnGestureListener {
+
+    //Schedule
+    //Classes
+    //Share events
 
     private static final String TAG = "briansMessage";
 
@@ -22,6 +30,11 @@ public class MainActivity extends AppCompatActivity implements MenuBarFragment.M
     ArrayList<String> fail = new ArrayList<String>();
     ArrayList<Integer> groupItemNumbers = new ArrayList<Integer>();
     ArrayList<ArrayList<String>> groupItemNames = new ArrayList<>();
+
+    int notes;
+    ArrayList<String> noteNames = new ArrayList<>();
+    ArrayList<String> noteDesc = new ArrayList<>();
+
     GestureDetector gestureDetector;
 
     @Override
@@ -30,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements MenuBarFragment.M
         setContentView(R.layout.activity_main);
 
         gestureDetector = new GestureDetector(this, this);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()).toString();
+        Log.i(TAG, timeStamp);
 
         Bundle data = getIntent().getExtras();
 
@@ -45,13 +60,17 @@ public class MainActivity extends AppCompatActivity implements MenuBarFragment.M
                 groupItemNames.add(items);
                 y++;
             }
+            notes = data.getInt("notes");
+            noteNames = data.getStringArrayList("noteNames");
+            noteDesc = data.getStringArrayList("noteDesc");
         }
 
         RelativeLayout mainMenuLayout = findViewById(R.id.mainMenuLayout);
 
-        /*TextView dateLbl = new TextView(this);
-        dateLbl.setText("");
+        TextView dateLbl = new TextView(this);
+        dateLbl.setText(timeStamp.substring(4,6) + " / " + timeStamp.substring(6,8));
         dateLbl.setTextColor(Color.WHITE);
+        dateLbl.setTextSize(50);
 
         RelativeLayout.LayoutParams dateLblDetails = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -59,10 +78,8 @@ public class MainActivity extends AppCompatActivity implements MenuBarFragment.M
         );
 
         dateLblDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        dateLblDetails.setMargins(0, 20, 0, 0);
+        dateLblDetails.setMargins(0, 60, 0, 0);
         mainMenuLayout.addView(dateLbl, dateLblDetails);
-
-        setContentView(mainMenuLayout);*/
     }
 
     @Override
@@ -71,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements MenuBarFragment.M
             return groups;
         } else if(x == 2) {
             return groupItems;
+        } else if(x == 3) {
+            return notes;
         }
         return x;
     }
@@ -81,6 +100,10 @@ public class MainActivity extends AppCompatActivity implements MenuBarFragment.M
             return groupNames;
         } else if(x == 2) {
             return groupTypes;
+        } else if(x == 3) {
+            return noteNames;
+        } else if(x == 4) {
+            return noteDesc;
         }
         return fail;
     }
@@ -112,6 +135,9 @@ public class MainActivity extends AppCompatActivity implements MenuBarFragment.M
                 extras.putStringArrayList(String.valueOf(y), items);
                 y++;
             }
+            i.putExtra("notes", notes);
+            i.putExtra("noteNames", noteNames);
+            i.putExtra("noteDesc", noteDesc);
             i.putExtras(extras);
             startActivity(i);
             return true;
@@ -119,6 +145,24 @@ public class MainActivity extends AppCompatActivity implements MenuBarFragment.M
 
         if (motionEvent2.getX() - motionEvent1.getX() > 100) {
             //Right
+            Intent i = new Intent(this, PlannerActivity.class);
+            Bundle extras = new Bundle();
+            extras.putInt("groups", groups);
+            extras.putInt("groupItems", groupItems);
+            extras.putStringArrayList("groupNames", groupNames);
+            extras.putStringArrayList("groupTypes", groupTypes);
+            extras.putIntegerArrayList("groupItemNumbers", groupItemNumbers);
+            int y = 1;
+            for(int x = 0; x < groups; x++) {
+                ArrayList<String> items = groupItemNames.get(x);
+                extras.putStringArrayList(String.valueOf(y), items);
+                y++;
+            }
+            i.putExtra("notes", notes);
+            i.putExtra("noteNames", noteNames);
+            i.putExtra("noteDesc", noteDesc);
+            i.putExtras(extras);
+            startActivity(i);
             return true;
         } else {
             return true;
@@ -127,35 +171,35 @@ public class MainActivity extends AppCompatActivity implements MenuBarFragment.M
 
     @Override
     public void onLongPress(MotionEvent arg0) {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
     public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2, float arg3) {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public void onShowPress(MotionEvent arg0) {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent arg0) {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        // TODO Auto-generated method stub
+
         return gestureDetector.onTouchEvent(motionEvent);
     }
 
     @Override
     public boolean onDown(MotionEvent arg0) {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
